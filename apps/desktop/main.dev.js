@@ -1,6 +1,6 @@
 /* eslint-disable global-require, no-console */
 
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu, ipcMain } from 'electron'
 import path from 'path'
 import windowStateKeeper from 'electron-window-state'
 import _ from 'lodash'
@@ -213,6 +213,14 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+// TODO: Put this code in a module
+ipcMain.on('terminal-command', (event, args) => {
+  const ret = cp.spawnSync('lncli', args)
+  let response = (ret.stderr.toString() === '') ? ret.stdout.toString() : ret.stderr.toString();
+  console.log(response)
+  event.sender.send('command-output', response)
+}) 
 
 app.on('ready', createWindow)
 

@@ -3,6 +3,7 @@
 node_modules
 
 # App packaged
+*package-lock.json
 dist
 release
 main.js

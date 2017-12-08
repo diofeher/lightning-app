@@ -7,6 +7,7 @@ import { remote } from 'electron'
 import { Box, Text } from 'lightning-components'
 import { Head, Page } from '../common'
 import { InfiniteScroll } from '../common'
+import TerminalAccess from './terminal'
 
 const { Menu, MenuItem } = remote
 
@@ -87,6 +88,7 @@ export const SettingsPage = ({ logs, pubkey }) => {
         <Box style={ styles.logs }>
           <SettingsLogs logs={ logs } />
         </Box>
+        <TerminalAccess />
       </div>
 	</div>
   )
