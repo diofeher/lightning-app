@@ -218,8 +218,7 @@ app.on('window-all-closed', () => {
 ipcMain.on('terminal-command', (event, args) => {
   const ret = cp.spawnSync('lncli', args)
   let response = (ret.stderr.toString() === '') ? ret.stdout.toString() : ret.stderr.toString();
-  console.log(response)
-  event.sender.send('command-output', response)
+  mainWindow.webContents.send('log', response)
 }) 
 
 app.on('ready', createWindow)

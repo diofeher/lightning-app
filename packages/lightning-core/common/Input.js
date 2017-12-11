@@ -75,7 +75,7 @@ export class Input extends React.Component {
           placeholder={ placeholder }
           value={ value }
           onChange={ handleChange }
-
+          onKeyPress= { this.props.onKeyPress }
           onFocus={ this.handleFocus }
           onBlur={ this.handleBlur }
         />

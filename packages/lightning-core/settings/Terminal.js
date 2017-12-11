@@ -1,55 +1,42 @@
 import React, { Component } from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import Terminal from 'react-bash';
+import { Input } from '../common';
 import { ipcRenderer, ipcMain } from 'electron';
+import reactCSS from 'reactcss'
 
-export default class TerminalAccess extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      commandData: '',
-      history: [{ value: 'Type `help` to begin' }],
-      structure: {
-        public: {
-          file1: { content: 'The is the content for file1 in the <public> directory.' },
-          file2: { content: 'The is the content for file2 in the <public> directory.' },
-          file3: { content: 'The is the content for file3 in the <public> directory.' },
-        },
-        'README.md': { content: 'Some readme' },
-      }
-    }
-  }
-
+export default class Terminal extends Component {
   render() {
-    const extensions = {
-      lncli: {
-        exec: (state, { args }) => {
-          let { history } = state
-          let cmd_args = history[history.length-1].value.split(' ').slice(1)
-          ipcRenderer.send('terminal-command', cmd_args);
-          console.log(this.state)
-          ipcRenderer.on('command-output', (event, arg) => {
-            // history.concat({value: arg})
-            this.setState({ 
-              // history: history.concat({value: arg}),
-              commandData: arg
-            })
-          })
-          return {
-            history: history.concat({ value: 'Running command...' }),
-          };
-        }
+    const styles = reactCSS({
+      'default': {
+        changer: {
+          marginTop: 10,
+          marginBottom: 10,
+          borderLeft: '1px solid #ddd',
+          paddingLeft: 15,
+          paddingRight: 15,
+          display: 'flex',
+          alignItems: 'center',
+          color: '#999',
+        },
+      },
+    })
+
+    const handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        console.log('event', e.target.value.split(' '))
+        ipcRenderer.send('terminal-command', e.target.value.split(' '));
       }
+
     }
+    const changer = (
+      <div style={styles.changer}>$ lncli</div>
+    )
+
     return (
-      <div className="parentContainer">
-        <div style={{ whiteSpace: 'pre' }}>
-          <Terminal history={this.state.history} structure={this.state.structure} extensions={extensions} />
-        </div>
-        <div style={{ flex: 1, whiteSpace: 'pre' }}>
-          {this.state.commandData}
-        </div>
-      </div>
+      <Input fullWidth
+        left={changer}
+        onKeyPress={handleKeyPress} />
     )
   }
 }
+

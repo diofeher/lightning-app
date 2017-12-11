@@ -25,7 +25,7 @@ export const NavLinks = ({ onChange }) => {
       id: 'transactions',
     }, {
       icon: 'settings',
-      label: 'Settings',
+      label: 'Advanced',
       id: 'settings',
     },
   ]

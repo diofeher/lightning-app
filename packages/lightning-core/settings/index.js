@@ -7,7 +7,7 @@ import { remote } from 'electron'
 import { Box, Text } from 'lightning-components'
 import { Head, Page } from '../common'
 import { InfiniteScroll } from '../common'
-import TerminalAccess from './terminal'
+import Terminal from './terminal'
 
 const { Menu, MenuItem } = remote
 
@@ -20,7 +20,7 @@ const SettingsLogs = ({ logs }) => {
     <InfiniteScroll startAtBottom insideStyles={ insideStyles } updateOn={ logs }>
       { _.map(logs, (log, i) => {
         return (
-          <div key={ i } style={{ whiteSpace: 'nowrap' }}>
+          <div key={ i } style={{ whiteSpace: 'pre' }}>
             <Text size="small" color="gray" fontFamily="monospace">{ log }</Text>
           </div>
         )
@@ -76,19 +76,22 @@ export const SettingsPage = ({ logs, pubkey }) => {
   return (
     <div style={ styles.page }>
       <Head
-        title="Settings"
-        body="Settings and logs for your wallet and the Lightning app" />
+        title="Advanced"
+        body="lncli access and logs for your wallet and the Lightning app" />
       <div style={ styles.pubkeyandlog } onContextMenu={ handleMenu }>
         { pubkey ? (
           <Box style={ styles.account }>
             <Text size="medium" display="block" ellipsis><Text bold>Pubkey: </Text>{ pubkey }</Text>
           </Box>
         ) : null }
+        <Text { ...styles.title }>lncli Access</Text>
+        <Box>
+          <Terminal />
+        </Box>
         <Text { ...styles.title }>Logs</Text>
         <Box style={ styles.logs }>
           <SettingsLogs logs={ logs } />
         </Box>
-        <TerminalAccess />
       </div>
 	</div>
   )
