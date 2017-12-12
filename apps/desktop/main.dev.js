@@ -216,9 +216,11 @@ app.on('window-all-closed', () => {
 
 // TODO: Put this code in a module
 ipcMain.on('terminal-command', (event, args) => {
-  const ret = cp.spawnSync('lncli', args)
+  let ret = cp.spawnSync('lncli', args)
   let response = (ret.stderr.toString() === '') ? ret.stdout.toString() : ret.stderr.toString();
-  mainWindow.webContents.send('log', response)
+  let dt = new Date().toISOString().replace('T', ' ').replace('Z', ' ')
+  mainWindow.webContents.send('log', dt + "$ lncli " + args.join(' '))
+  mainWindow.webContents.send('log', dt + response)
 }) 
 
 app.on('ready', createWindow)

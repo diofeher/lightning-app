@@ -23,8 +23,8 @@ export default class Terminal extends Component {
 
     const handleKeyPress = (e) => {
       if (e.key === 'Enter') {
-        console.log('event', e.target.value.split(' '))
         ipcRenderer.send('terminal-command', e.target.value.split(' '));
+        e.target.value = '';
       }
 
     }
