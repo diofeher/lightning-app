@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Tabs, Tab } from 'material-ui/Tabs';
 import { Input } from '../common';
 import { ipcRenderer, ipcMain } from 'electron';
 import reactCSS from 'reactcss'
