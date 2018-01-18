@@ -219,7 +219,6 @@ app.on('window-all-closed', () => {
   }
 })
 
-// TODO: Put this code in a module
 ipcMain.on('terminal-command', (event, args) => {
   let ret = cp.spawnSync('lncli', args)
   let response = (ret.stderr.toString() === '') ? ret.stdout.toString() : ret.stderr.toString();
