@@ -13,11 +13,6 @@ import prodCfg from '../webpack.config.production'
 import electronCfg from '../webpack.config.electron'
 import pkg from '../package.json'
 
-if(_.isNil(process.env.GOPATH)) {
-  console.error("You need to define your GOPATH variable so lncli can be bundled together.")
-  process.exit(1)
-}
-
 const argv = minimist(process.argv.slice(2))
 const toNodePath = name => `/node_modules/${ name }($|/)`
 const devDeps = Object
@@ -42,9 +37,6 @@ const DEFAULT_OPTS = {
   name: appName,
   asar: shouldUseAsar,
   icon: argv.icon || argv.i || 'assets/ln-logo',
-  extraResource: [
-    path.join(process.env.GOPATH, 'bin', 'lncli')
-  ],
   ignore: [
     '^/test($|/)',
     '^/release($|/)',

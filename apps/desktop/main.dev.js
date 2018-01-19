@@ -220,11 +220,16 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.on('terminal-command', (event, args) => {
-  let ret = cp.spawnSync('lncli', args)
-  let response = (ret.stderr.toString() === '') ? ret.stdout.toString() : ret.stderr.toString();
+  const plat = os.platform()
+  const filePath = path.join(__dirname, 'bin', plat, plat === 'win32' ? `lncli.exe` : 'lncli')
+  const instance = cp.spawn(filePath, args)
   let dt = new Date().toISOString().replace('T', ' ').replace('Z', ' ')
-  mainWindow.webContents.send('log', dt + "$ lncli " + args.join(' '))
-  mainWindow.webContents.send('log', dt + response)
+  logs.push(`${ dt } $ lncli ${ args.join(' ') }`)
+  instance.stdout.on('data', data => logs.push(`${ data }`))
+  instance.stderr.on('data', (data) => {
+    logs.push(`Error: ${ data }`)
+    fileLog.error(` ${ data }`)
+  })
 }) 
 
 app.on('ready', createWindow)
